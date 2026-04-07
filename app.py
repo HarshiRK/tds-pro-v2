@@ -82,3 +82,15 @@ if df is not None:
                     st.write(f"Amount is within the {calc_mode} safety limit of **₹{limit:,.0f}**.")
         else:
             st.error("No matching rule found in database for this date/payee combo.")
+            @st.cache_data
+def load_data():
+    try:
+        # Added 'on_bad_lines' to skip or fix rows with extra commas
+        df = pd.read_csv("tds_data.csv", 
+                         sep=None, 
+                         engine='python', 
+                         on_bad_lines='skip') # This skips the broken line so the app loads
+        
+        df.columns = [c.strip() for c in df.columns]
+        # ... (keep the rest of your cleaning code the same)
+        return df
